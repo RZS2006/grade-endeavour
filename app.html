@@ -5,11 +5,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>App</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- JavaScript -->
+    <script src="./js/index.js" defer></script>
+
+    <title>Application | Grade Endeavour</title>
 </head>
 
 <body>
-
+    <header class="bg-gray-100 w-full">
+        <div class="px-6 sm:container mx-auto py-4 flex justify-between gap-4">
+            <a href="index.html" class="logo text-emerald-800 text-lg">Grade Endeavour</a>
+            <nav class="flex flex-wrap gap-2 sm:gap-4 items-center">
+                <a href="index.html" class="uppercase text-sm text-slate-700 hover:text-slate-900">Homepage</a>
+                <a href="about.html" class="uppercase text-sm text-slate-700 hover:text-slate-900">About</a>
+                <a href="app.html" class="uppercase text-sm text-slate-700 hover:text-slate-900">Application</a>
+            </nav>
+        </div>
+    </header>
+    <div class="px-6 sm:container mx-auto py-6">
+        <h2 class="text-3xl">Add New Course</h2>
+        <form id="add-course-form">
+            <label for="course-name">Course Name</label>
+            <input id="course-name" type="text">
+            <label for="course-goal">Course Goal</label>
+            <input id="course-goal" type="text">
+            <button type="submit" class="bg-emerald-800 text-white py-2 px-3 uppercase font-medium text-sm">Add
+                Course</button>
+        </form>
+    </div>
+    <div class="px-6 sm:container mx-auto">
+        <div><span>Civics</span><span>8.20 / 9.40 / 9.60</span></div>
+        <div>
+            <div>
+                <h3>Course Stats</h3>
+                <span>Current Average: </span><span>Aimed Average:</span><span>Needed Average:</span>
+            </div>
+            <div>
+                <h3>Course Items</h3>
+                <div><span>Finnish Economy</span><span>Exam</span><span>9th February 2022</span></div>
+                <div><span>Finnish Economy</span><span>Project</span><span>9th February 2022</span></div>
+                <div><span>Finnish Economy</span><span>Group</span><span>9th February 2022</span></div>
+            </div>
+            <div>
+                <h3>Add Course Item</h3>
+                <form action="">
+                    <input type="text">
+                    <select name="" id="">
+                        <option value="">Exam</option>
+                        <option value="">Project</option>
+                        <option value="">Group</option>
+                    </select>
+                    <input type="text">
+                    <button type="submit"></button>
+                </form>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>
