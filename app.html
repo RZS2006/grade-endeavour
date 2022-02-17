@@ -17,10 +17,24 @@
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
+        @layer base {
+            .wrapper {
+                @apply px-6 sm:container mx-auto
+            }
+        }
+
         @layer components {
             .button {        
-                @apply py-2 px-3 uppercase font-semibold text-white text-sm rounded bg-emerald-800 hover:bg-emerald-700 whitespace-nowrap     
-            }    
+                @apply h-10 py-2 px-3 uppercase font-semibold text-white text-sm rounded bg-emerald-800 hover:bg-emerald-700 whitespace-nowrap     
+            }  
+
+            .label {
+                @apply uppercase text-sm text-slate-700
+            }
+            
+            .input {
+                @apply mt-1 h-10 border rounded py-1 px-2 outline-none w-full focus:ring-1
+            }
         }
     </style>
 
@@ -32,57 +46,129 @@
 
 <body>
     <header class="bg-gray-100 w-full">
-        <div class="px-6 sm:container mx-auto py-4 flex justify-between gap-4">
+        <div class="wrapper py-4 flex justify-between gap-4">
             <a href="index.html" class="logo text-lg text-emerald-800">Grade Endeavour</a>
             <nav class="flex flex-wrap items-center gap-2 sm:gap-4">
-                <a href="index.html" class="uppercase text-sm text-slate-700 hover:text-slate-900">Homepage</a>
-                <a href="about.html" class="uppercase text-sm text-slate-700 hover:text-slate-900">About</a>
-                <a href="app.html" class="uppercase text-sm text-slate-700 hover:text-slate-900">Application</a>
+                <a href="index.html"
+                    class="uppercase text-sm text-slate-500 hover:text-slate-900 transition duration-200">Homepage</a>
+                <a href="about.html"
+                    class="uppercase text-sm text-slate-500 hover:text-slate-900 transition duration-200">About</a>
+                <a href="app.html"
+                    class="uppercase text-sm text-slate-500 hover:text-slate-900 transition duration-200">Application</a>
             </nav>
         </div>
     </header>
-    <div class="px-6 py-6 sm:container mx-auto">
+    <div class="wrapper py-10">
         <h2 class="text-3xl">Add New Course</h2>
         <form id="add-course-form" class="mt-4 flex flex-col sm:flex-row items-start sm:items-end gap-4">
             <div class="w-full sm:w-auto">
-                <label for="course-name" class="uppercase text-sm text-slate-700">Course Name</label>
-                <input id="course-name" type="text"
-                    class="mt-1 border rounded py-1 px-2 outline-none w-full focus:ring-1">
+                <label for="course-name" class="label">Course Name</label>
+                <input id="course-name" type="text" class="input">
             </div>
             <div class="w-full sm:w-auto">
-                <label for="course-goal" class="uppercase text-sm text-slate-700">Course Goal</label>
-                <input id="course-goal" type="number" min="4" max="10" step="0.25"
-                    class="mt-1 border rounded py-1 px-2 outline-none w-full focus:ring-1">
+                <label for="course-goal" class="label">Course Goal</label>
+                <input id="course-goal" type="number" min="4" max="10" step="0.25" class="input">
             </div>
             <button type="submit" class="button">Add
                 Course</button>
         </form>
     </div>
-    <div id="course-container" class="px-6 sm:container mx-auto">
-        <div><span>Civics</span><span>8.20 / 9.40 / 9.60</span></div>
-        <div>
-            <div>
-                <h3>Course Stats</h3>
-                <span>Current Average: </span><span>Aimed Average:</span><span>Needed Average:</span>
+    <div id="course-container" class="wrapper flex flex-col gap-4">
+        <div id="course">
+            <div
+                class="flex justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 cursor-pointer transition duration-200">
+                <h3 class="font-semibold">YYH2 Civics</h3>
+                <div>
+                    <span class="text-slate-700">8.20 /</span>
+                    <span class="text-slate-700">8.20 /</span>
+                    <span class="font-semibold">8.20</span>
+                </div>
             </div>
-            <div>
-                <h3>Course Items</h3>
-                <div><span>Finnish Economy</span><span>Exam</span><span>9th February 2022</span></div>
-                <div><span>Finnish Economy</span><span>Project</span><span>9th February 2022</span></div>
-                <div><span>Finnish Economy</span><span>Group</span><span>9th February 2022</span></div>
-            </div>
-            <div>
-                <h3>Add Course Item</h3>
-                <form action="">
-                    <input type="text">
-                    <select name="" id="">
-                        <option value="">Exam</option>
-                        <option value="">Project</option>
-                        <option value="">Group</option>
-                    </select>
-                    <input type="text">
-                    <button type="submit"></button>
-                </form>
+            <div class="flex flex-col gap-4">
+                <div class="p-4 border-b">
+                    <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
+                    <div class="mt-4 flex flex-wrap gap-4">
+                        <span class="text-slate-700">Current Average: 9.00</span>
+                        <span class="text-slate-700">Aimed Average: 10.00</span>
+                        <span class="font-semibold">Needed Average: 9.50</span>
+                    </div>
+                </div>
+
+                <div class="px-4">
+                    <h3 class="uppercase text-sm text-slate-700">Course Items</h3>
+                    <div class="overflow-x-auto mt-4">
+                        <table class="mt-2 w-full">
+                            <thead class="bg-gray-50">
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Type</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Grade</th>
+                                <th scope="col" class="relative px-6 py-3">
+                                    <span class="sr-only">Delete</span>
+                                </th>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-gray-50">
+                    <h3 class="uppercase text-sm text-slate-700">Add Course Item</h3>
+                    <form class="mt-4 flex flex-wrap flex-col sm:flex-row items-start sm:items-end gap-4">
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-name" class="label">Name</label>
+                            <input id="course-item-name" type="text" class="input">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-type" class="label">Type</label>
+                            <select id="course-item-type" class="input bg-white">
+                                <option value="exam">Exam</option>
+                                <option value="test">Test</option>
+                                <option value="essay">Essay</option>
+                                <option value="project">Project</option>
+                                <option value="group">Group</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-date" class="label">Date</label>
+                            <input id="course-item-date" type="date" class="input">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-grade" class="label">Grade</label>
+                            <input id="course-item-grade" type="number" min="4" max="10" step="0.25" class="input">
+                        </div>
+                        <button type="submit" class="button">Add Course Item</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
