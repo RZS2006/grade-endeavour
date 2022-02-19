@@ -73,103 +73,122 @@
             <button type="submit" class="button">Add
                 Course</button>
         </form>
+        <form class="mt-4">
+            <input type="checkbox" id="use-ib-grading-checkbox">
+            <label for="use-ib-grading-checkbox" class="label">Use IB DP Grading Scale</label>
+        </form>
     </div>
     <div id="course-container" class="wrapper flex flex-col gap-4"></div>
+
+    <!-- Templates -->
+
+    <template id="template-course">
+        <div id="course">
+            <div id="course-header"
+                class="flex justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 cursor-pointer transition duration-200">
+                <h3 id="course-d-name" class="font-semibold">YYH2 Civics</h3>
+                <div>
+                    <span id="course-header-ca" class="text-slate-700">8.20 /</span>
+                    <span id="course-header-aa" class="text-slate-700">8.20 /</span>
+                    <span id="course-header-na" class="font-semibold">8.20</span>
+                </div>
+            </div>
+            <div class="flex flex-col gap-4 hidden">
+                <div class="p-4 border-b">
+                    <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
+
+                    <div class="mt-4 flex justify-between">
+                        <div class="flex flex-wrap gap-4">
+                            <span id="course-d-current-average" class="text-slate-700">Current Average: 9.00</span>
+                            <span id="course-d-aimed-average" class="text-slate-700">Aimed Average: 10.00</span>
+                            <span id="course-d-needed-average" class="font-semibold">Needed Average: 9.50</span>
+                        </div>
+                        <a href="#" id="course-delete-link" class="text-rose-600 hover:text-rose-900">Delete
+                            Course</a>
+                    </div>
+                </div>
+
+                <div class="px-4">
+                    <h3 class="uppercase text-sm text-slate-700">Course Entries</h3>
+                    <div class="overflow-x-auto mt-4">
+                        <table class="mt-2 w-full">
+                            <thead class="bg-gray-50">
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Name</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Type</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Date</th>
+                                <th scope="col"
+                                    class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                    Grade</th>
+                                <th scope="col" class="relative px-6 py-3">
+                                    <span class="sr-only">Delete</span>
+                                </th>
+                            </thead>
+                            <tbody id="course-item-container" class="bg-white divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                                        <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-gray-50">
+                    <h3 class="uppercase text-sm text-slate-700">Add Course Entry</h3>
+                    <form id="add-course-item-form"
+                        class="mt-4 flex flex-wrap flex-col sm:flex-row items-start sm:items-end gap-4">
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-name" class="label">Name</label>
+                            <input id="course-item-name" type="text" class="input">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-type" class="label">Type</label>
+                            <select id="course-item-type" class="input bg-white">
+                                <option value="exam">Exam</option>
+                                <option value="test">Test</option>
+                                <option value="essay">Essay</option>
+                                <option value="project">Project</option>
+                                <option value="group">Group</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-date" class="label">Date</label>
+                            <input id="course-item-date" type="date" class="input">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="course-item-grade" class="label">Grade</label>
+                            <input id="course-item-grade" type="number" min="4" max="10" step="0.25" class="input">
+                        </div>
+                        <button type="submit" class="button">Add Course Entry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-course-entry">
+        <tr id="course-item-row">
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+                <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
+            </td>
+        </tr>
+    </template>
 </body>
-
-<template>
-    <div id="course">
-        <div id="course-header"
-            class="flex justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 cursor-pointer transition duration-200">
-            <h3 id="course-d-name" class="font-semibold">YYH2 Civics</h3>
-            <div>
-                <span id="course-header-ca" class="text-slate-700">8.20 /</span>
-                <span id="course-header-aa" class="text-slate-700">8.20 /</span>
-                <span id="course-header-na" class="font-semibold">8.20</span>
-            </div>
-        </div>
-        <div class="flex flex-col gap-4 hidden">
-            <div class="p-4 border-b">
-                <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
-
-                <div class="mt-4 flex justify-between">
-                    <div class="flex flex-wrap gap-4">
-                        <span id="course-d-current-average" class="text-slate-700">Current Average: 9.00</span>
-                        <span id="course-d-aimed-average" class="text-slate-700">Aimed Average: 10.00</span>
-                        <span id="course-d-needed-average" class="font-semibold">Needed Average: 9.50</span>
-                    </div>
-                    <a href="#" id="course-delete-link" class="text-rose-600 hover:text-rose-900">Delete
-                        Course</a>
-                </div>
-            </div>
-
-            <div class="px-4">
-                <h3 class="uppercase text-sm text-slate-700">Course Items</h3>
-                <div class="overflow-x-auto mt-4">
-                    <table class="mt-2 w-full">
-                        <thead class="bg-gray-50">
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Type</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Date</th>
-                            <th scope="col"
-                                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Grade</th>
-                            <th scope="col" class="relative px-6 py-3">
-                                <span class="sr-only">Delete</span>
-                            </th>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-100">
-                            <tr>
-                                <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                    <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="p-4 bg-gray-50">
-                <h3 class="uppercase text-sm text-slate-700">Add Course Item</h3>
-                <form class="mt-4 flex flex-wrap flex-col sm:flex-row items-start sm:items-end gap-4">
-                    <div class="w-full sm:w-auto">
-                        <label for="course-item-name" class="label">Name</label>
-                        <input id="course-item-name" type="text" class="input">
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <label for="course-item-type" class="label">Type</label>
-                        <select id="course-item-type" class="input bg-white">
-                            <option value="exam">Exam</option>
-                            <option value="test">Test</option>
-                            <option value="essay">Essay</option>
-                            <option value="project">Project</option>
-                            <option value="group">Group</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <label for="course-item-date" class="label">Date</label>
-                        <input id="course-item-date" type="date" class="input">
-                    </div>
-                    <div class="w-full sm:w-auto">
-                        <label for="course-item-grade" class="label">Grade</label>
-                        <input id="course-item-grade" type="number" min="4" max="10" step="0.25" class="input">
-                    </div>
-                    <button type="submit" class="button">Add Course Item</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</template>
 
 </html>
