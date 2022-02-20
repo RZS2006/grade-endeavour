@@ -9,9 +9,8 @@ const courseContainer = document.querySelector('#course-container');
 let MIN_GRADE = 4;
 let MAX_GRADE = 10;
 
-let useIbGradingScale = false;
-
 let courses = fetchFromLocalStorage('courses', []);
+let useIbGradingScale = fetchFromLocalStorage('use-ib-grading-scale', false);
 
 // Functions
 
@@ -182,7 +181,17 @@ const renderCourses = (courses) => {
 	});
 };
 
-renderCourses(courses);
+const changeGradingScale = (useIbGradingScale) => {
+	MIN_GRADE = useIbGradingScale ? 1 : 4;
+	MAX_GRADE = useIbGradingScale ? 7 : 10;
+
+	const courseGoalInput = addCourseForm.querySelector('#add-course-goal');
+	courseGoalInput.setAttribute('min', MIN_GRADE);
+	courseGoalInput.setAttribute('max', MAX_GRADE);
+	courseGoalInput.setAttribute('step', useIbGradingScale ? 1 : 0.25);
+
+	console.info('Using IB DP Grading Scale:', useIbGradingScale);
+};
 
 // Event Listeners
 
@@ -209,14 +218,14 @@ addCourseForm.addEventListener('submit', (e) => {
 
 ibGradingCheckbox.addEventListener('change', () => {
 	useIbGradingScale = ibGradingCheckbox.checked;
+	changeGradingScale(useIbGradingScale);
 
-	MIN_GRADE = useIbGradingScale ? 1 : 4;
-	MAX_GRADE = useIbGradingScale ? 7 : 10;
+	saveToLocalStorage('use-ib-grading-scale', useIbGradingScale);
+});
 
-	const courseGoal = addCourseForm.querySelector('#add-course-goal');
-	courseGoal.setAttribute('min', MIN_GRADE);
-	courseGoal.setAttribute('max', MAX_GRADE);
-	courseGoal.setAttribute('step', useIbGradingScale ? 1 : 0.25);
+document.addEventListener('DOMContentLoaded', () => {
+	ibGradingCheckbox.checked = useIbGradingScale;
+	changeGradingScale(useIbGradingScale);
 
-	console.log(`Using IB DP Grading Scale: ${useIbGradingScale}`);
+	renderCourses(courses);
 });
