@@ -18,8 +18,6 @@ const addCourse = (name, goal) => {
 	const element = document.getElementsByTagName('template')[0];
 	const clone = element.content.cloneNode(true);
 
-	console.log(clone);
-
 	const key = Date.now();
 
 	clone.querySelector('#course').setAttribute('data-key', key);
@@ -30,20 +28,20 @@ const addCourse = (name, goal) => {
 			.nextElementSibling.classList.toggle('hidden');
 	});
 
-	clone.querySelector('#course-d-name').innerText = name;
+	clone.querySelector('#course-details-name').innerText = name;
 
 	clone.querySelector('#course-header-ca').innerText = (0).toFixed(2);
 	clone.querySelector('#course-header-aa').innerText = goal;
 	clone.querySelector('#course-header-na').innerText = goal;
 
 	clone.querySelector(
-		'#course-d-current-average'
+		'#course-details-ca'
 	).innerText = `Current Average: ${(0).toFixed(2)}`;
 	clone.querySelector(
-		'#course-d-aimed-average'
+		'#course-details-aa'
 	).innerText = `Aimed Average: ${goal}`;
 	clone.querySelector(
-		'#course-d-needed-average'
+		'#course-details-na'
 	).innerText = `Needed Average: ${goal}`;
 
 	clone
@@ -53,7 +51,7 @@ const addCourse = (name, goal) => {
 		});
 
 	clone
-		.querySelector('#add-course-item-form')
+		.querySelector('#add-course-entry-form')
 		.addEventListener('submit', (e) => {
 			e.preventDefault();
 
@@ -65,8 +63,6 @@ const addCourse = (name, goal) => {
 
 			const element2 = document.getElementsByTagName('template')[1];
 			const clone2 = element2.content.cloneNode(true);
-
-			console.log(clone2);
 
 			const key = Date.now();
 
@@ -85,7 +81,7 @@ const addCourse = (name, goal) => {
 			clone2.querySelectorAll('td')[4].addEventListener('click', (e) => {
 				e.preventDefault();
 
-				deleteCourseItem(key, itemContainerCourse.dataset.key);
+				deleteCourseEntry(key, itemContainerCourse.dataset.key);
 			});
 
 			itemContainer.appendChild(clone2);
@@ -95,7 +91,8 @@ const addCourse = (name, goal) => {
 		id: key,
 		name,
 		goal,
-		courseItems: [],
+		courseEntries: [],
+		forecastSpan: 1,
 	};
 
 	courses.push(object);
@@ -105,35 +102,30 @@ const addCourse = (name, goal) => {
 	courseContainer.appendChild(clone);
 };
 
-const deleteCourse = (id) => {
-	const courseElement = courseContainer.querySelector(`[data-key="${id}"]`);
-	courseElement.remove();
-
-	courses = courses.filter((course) => course.id !== id);
+const deleteCourse = (courseId) => {
+	courses = courses.filter((course) => course.id !== courseId);
 
 	saveToLocalStorage('courses', courses);
+	renderCourses(courses);
 };
 
-const addCourseItem = (name, type, date, grade, courseId) => {
-	courses = courses.map((course) => {
-		if (course.id === courseId) {
-			const object = {
-				name,
-				type,
-				date,
-				grade,
-			};
-
-			return { ...course, courseItems: { ...courseItems, object } };
-		} else {
-			return course;
-		}
-	});
+const addCourseEntry = (name, type, date, grade, courseId) => {
+	const course = courses.find((course) => course.id === courseId);
+	if (course) {
+		course.courseEntries.push({
+			id: Date.now(),
+			name,
+			type,
+			date,
+			grade,
+		});
+	}
 
 	saveToLocalStorage('courses', courses);
+	renderCourses(courses);
 };
 
-const deleteCourseItem = (itemId, courseId) => {
+const deleteCourseEntry = (itemId, courseId) => {
 	const courseElement = courseContainer.querySelector(
 		`[data-key="${courseId}"]`
 	);
@@ -143,42 +135,156 @@ const deleteCourseItem = (itemId, courseId) => {
 	saveToLocalStorage('courses', courses);
 };
 
+const changeForecastSpan = (value, courseId) => {
+	const course = courses.find((course) => course.id === courseId);
+	if (course) {
+		course.forecastSpan = value;
+	}
+
+	saveToLocalStorage('courses', courses);
+	renderCourses(courses);
+};
+
 const renderCourses = (courses) => {
+	while (courseContainer.firstChild) {
+		courseContainer.removeChild(courseContainer.lastChild);
+	}
+
 	courses.forEach((course) => {
-		const element = document.getElementsByTagName('template')[0];
-		const clone = element.content.cloneNode(true);
+		const { id, name, goal, courseEntries, forecastSpan } = course;
 
-		clone.querySelector('#course').setAttribute('data-key', course.id);
+		const courseTemplate = document.querySelector('#template-course');
+		const courseClone = courseTemplate.content.cloneNode(true);
 
-		clone.querySelector('#course-header').addEventListener('click', (e) => {
-			e.target.nextElementSibling.classList.toggle('hidden');
+		courseClone.querySelector('#course').setAttribute('data-key', id);
+
+		courseClone
+			.querySelector('#course-header')
+			.addEventListener('click', (e) => {
+				e.target
+					.closest('#course-header')
+					.nextElementSibling.classList.toggle('hidden');
+			});
+
+		courseClone.querySelector('#course-details-name').innerText = name;
+
+		const currentAverage = getCurrentAverage(courseEntries);
+		const neededAverage = getNeededAverage(
+			courseEntries,
+			goal,
+			forecastSpan
+		);
+
+		courseClone.querySelector('#course-header-ca').innerText =
+			currentAverage.toFixed(2);
+		courseClone.querySelector('#course-header-aa').innerText =
+			goal.toFixed(2);
+		courseClone.querySelector('#course-header-na').innerText =
+			currentAverage <= goal ? neededAverage.toFixed(2) : '-';
+
+		courseClone.querySelector(
+			'#course-details-ca'
+		).innerText = `Current: ${currentAverage.toFixed(2)}`;
+		courseClone.querySelector(
+			'#course-details-aa'
+		).innerText = `Aimed: ${goal.toFixed(2)}`;
+		courseClone.querySelector('#course-details-na').innerText = `Needed: ${
+			currentAverage <= goal ? neededAverage.toFixed(2) : '-'
+		}`;
+
+		const forecastSpanInput = courseClone.querySelector('#forecast-span');
+
+		forecastSpanInput.value = forecastSpan;
+		forecastSpanInput.addEventListener('change', (e) => {
+			const value = parseInt(e.target.value);
+
+			if (value >= 1 && value <= 10) {
+				changeForecastSpan(value, id);
+			}
 		});
 
-		clone.querySelector('#course-d-name').innerText = course.name;
+		// Delete Course Link
 
-		clone.querySelector('#course-header-ca').innerText = (0).toFixed(2);
-		clone.querySelector('#course-header-aa').innerText = course.goal;
-		clone.querySelector('#course-header-na').innerText = course.goal;
-
-		clone.querySelector('#course-d-current-average').innerText =
-			(0).toFixed(2);
-		clone.querySelector('#course-d-aimed-average').innerText = course.goal;
-		clone.querySelector('#course-d-needed-average').innerText = course.goal;
-
-		clone
+		courseClone
 			.querySelector('#course-delete-link')
-			.addEventListener('click', (e) => {
-				deleteCourse(course.id);
+			.addEventListener('click', () => {
+				deleteCourse(id);
 			});
 
-		clone
-			.querySelector('#add-course-item-form')
-			.addEventListener('submit', (e) => {
-				e.preventDefault();
-			});
+		const courseEntryContainer = courseClone.querySelector(
+			'#course-entry-container'
+		);
 
-		courseContainer.appendChild(clone);
+		courseEntries.forEach((entry) => {
+			const { id, name, type, date, grade } = entry;
+
+			const courseEntryTemplate = document.querySelector(
+				'#template-course-entry'
+			);
+			const courseEntryClone =
+				courseEntryTemplate.content.cloneNode(true);
+
+			courseEntryClone
+				.querySelector('#course-item-row')
+				.setAttribute('data-key', id);
+
+			courseEntryClone.querySelectorAll('td')[0].innerText = name;
+			courseEntryClone.querySelectorAll('td')[1].innerText = type;
+			courseEntryClone.querySelectorAll('td')[2].innerText = date;
+			courseEntryClone.querySelectorAll('td')[3].innerText =
+				grade.toFixed(2);
+
+			courseEntryContainer.appendChild(courseEntryClone);
+		});
+
+		const addCourseEntryForm = courseClone.querySelector(
+			'#add-course-entry-form'
+		);
+
+		addCourseEntryForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+
+			const entryName = e.target.elements['name'].value;
+			const entryType = e.target.elements['type'].value;
+			const entryDate = e.target.elements['date'].value;
+			const entryGrade = e.target.elements['grade'].value;
+
+			addCourseEntry(
+				entryName,
+				entryType,
+				entryDate,
+				parseFloat(entryGrade),
+				id
+			);
+		});
+
+		// Append Clone
+
+		courseContainer.appendChild(courseClone);
 	});
+};
+
+const getCurrentAverage = (courseEntries) => {
+	const sum = courseEntries.reduce(
+		(prevEntry, curEntry) => prevEntry + curEntry.grade,
+		0
+	);
+	return courseEntries.length > 0 ? sum / courseEntries.length : 0;
+};
+
+const getNeededAverage = (courseEntries, goal, forecastSpan) => {
+	const currentAverage = getCurrentAverage(courseEntries);
+
+	// Course Entries × Current Average + Forecast Span × (Needed Average)
+	// ------------------------------------------------------------------- = Goal
+	// Course Entries + Forecast Span
+
+	return (
+		(forecastSpan * goal +
+			goal * courseEntries.length -
+			currentAverage * courseEntries.length) /
+		forecastSpan
+	);
 };
 
 const changeGradingScale = (useIbGradingScale) => {
@@ -209,7 +315,7 @@ addCourseForm.addEventListener('submit', (e) => {
 		courseGoal >= MIN_GRADE &&
 		courseGoal <= MAX_GRADE
 	) {
-		addCourse(courseName, courseGoal.toFixed(2));
+		addCourse(courseName, courseGoal);
 
 		courseNameInput.value = '';
 		courseGoalInput.value = '';

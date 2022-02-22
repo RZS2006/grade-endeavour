@@ -86,10 +86,12 @@
         <div id="course">
             <div id="course-header"
                 class="flex justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 cursor-pointer transition duration-200">
-                <h3 id="course-d-name" class="font-semibold">YYH2 Civics</h3>
-                <div>
-                    <span id="course-header-ca" class="text-slate-700">8.20 /</span>
-                    <span id="course-header-aa" class="text-slate-700">8.20 /</span>
+                <h3 id="course-details-name" class="font-semibold">YYH2 Civics</h3>
+                <div class="text-slate-700">
+                    <span id="course-header-ca">8.20</span>
+                    /
+                    <span id="course-header-aa">8.20</span>
+                    /
                     <span id="course-header-na" class="font-semibold">8.20</span>
                 </div>
             </div>
@@ -98,14 +100,21 @@
                     <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
 
                     <div class="mt-4 flex justify-between">
-                        <div class="flex flex-wrap gap-4">
-                            <span id="course-d-current-average" class="text-slate-700">Current Average: 9.00</span>
-                            <span id="course-d-aimed-average" class="text-slate-700">Aimed Average: 10.00</span>
-                            <span id="course-d-needed-average" class="font-semibold">Needed Average: 9.50</span>
+                        <div class="flex flex-wrap gap-4 text-slate-700">
+                            <span id="course-details-ca">Current Average: 9.00</span>
+                            <span id="course-details-aa">Aimed Average: 10.00</span>
+                            <span id="course-details-na" class="font-semibold">Needed Average: 9.50</span>
                         </div>
-                        <a href="#" id="course-delete-link" class="text-rose-600 hover:text-rose-900">Delete
-                            Course</a>
+                        <button id="course-delete-link" class="text-rose-600 hover:text-rose-900">Delete
+                            Course</button>
                     </div>
+                    <form class="mt-4">
+                        <div class="w-full sm:w-auto">
+                            <label for="forecast-span" class="label">Needed Average Forecast Span</label>
+                            <input id="forecast-span" type="number" required value="1" min="1" max="10" step="1"
+                                class="input block w-full sm:w-auto" autocomplete="off">
+                        </div>
+                    </form>
                 </div>
 
                 <div class="px-4">
@@ -129,32 +138,22 @@
                                     <span class="sr-only">Delete</span>
                                 </th>
                             </thead>
-                            <tbody id="course-item-container" class="bg-white divide-y divide-gray-100">
-                                <tr>
-                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                    <td class="px-6 py-4 text-slate-700">Unemployment</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                        <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <tbody id="course-entry-container" class="bg-white divide-y divide-gray-100"></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div class="p-4 bg-gray-50">
                     <h3 class="uppercase text-sm text-slate-700">Add Course Entry</h3>
-                    <form id="add-course-item-form"
+                    <form id="add-course-entry-form"
                         class="mt-4 flex flex-wrap flex-col sm:flex-row items-start sm:items-end gap-4">
                         <div class="w-full sm:w-auto">
                             <label for="course-item-name" class="label">Name</label>
-                            <input id="course-item-name" type="text" class="input">
+                            <input id="course-item-name" name="name" type="text" required class="input">
                         </div>
                         <div class="w-full sm:w-auto">
                             <label for="course-item-type" class="label">Type</label>
-                            <select id="course-item-type" class="input bg-white">
+                            <select id="course-item-type" name="type" required class="input bg-white">
                                 <option value="exam">Exam</option>
                                 <option value="test">Test</option>
                                 <option value="essay">Essay</option>
@@ -165,11 +164,12 @@
                         </div>
                         <div class="w-full sm:w-auto">
                             <label for="course-item-date" class="label">Date</label>
-                            <input id="course-item-date" type="date" class="input">
+                            <input id="course-item-date" name="date" type="date" required class="input">
                         </div>
                         <div class="w-full sm:w-auto">
                             <label for="course-item-grade" class="label">Grade</label>
-                            <input id="course-item-grade" type="number" min="4" max="10" step="0.25" class="input">
+                            <input id="course-item-grade" name="grade" type="number" required min="4" max="10"
+                                step="0.25" class="input">
                         </div>
                         <button type="submit" class="button">Add Course Entry</button>
                     </form>
