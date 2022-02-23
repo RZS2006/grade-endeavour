@@ -1,4 +1,5 @@
 import { fetchFromLocalStorage, saveToLocalStorage } from './local-storage.js';
+import { getCurrentAverage, getNeededAverage } from './averages.js';
 
 // Constants
 
@@ -74,10 +75,10 @@ const changeForecastSpan = (value, courseId) => {
 	renderCourses(courses);
 };
 
-const changeDropdownOpen = (courseId) => {
+const changeDropdownOpen = (value, courseId) => {
 	const course = courses.find((course) => course.id === courseId);
 	if (course) {
-		course.isOpen = !course.isOpen;
+		course.isOpen = value || !course.isOpen;
 	}
 
 	saveToLocalStorage('courses', courses);
@@ -231,33 +232,6 @@ const renderCourses = (courses) => {
 
 		courseContainer.appendChild(courseClone);
 	});
-};
-
-// TODO: EXTRACT
-
-const getCurrentAverage = (courseEntries) => {
-	const sum = courseEntries.reduce(
-		(prevEntry, curEntry) => prevEntry + curEntry.grade,
-		0
-	);
-	return courseEntries.length > 0 ? sum / courseEntries.length : 0;
-};
-
-// TODO: EXTRACT
-
-const getNeededAverage = (courseEntries, goal, forecastSpan) => {
-	const currentAverage = getCurrentAverage(courseEntries);
-
-	// Course Entries × Current Average + Forecast Span × (Needed Average)
-	// ------------------------------------------------------------------- = Goal
-	// Course Entries + Forecast Span
-
-	return (
-		(forecastSpan * goal +
-			goal * courseEntries.length -
-			currentAverage * courseEntries.length) /
-		forecastSpan
-	);
 };
 
 // TODO: EXTRACT
