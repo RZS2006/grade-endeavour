@@ -46,8 +46,11 @@
 
 <body>
     <header class="bg-gray-100 w-full">
-        <div class="wrapper py-4 flex justify-between gap-4">
-            <a href="index.html" class="logo text-lg text-emerald-800">Grade Endeavour</a>
+        <div class="wrapper py-4 flex flex-col sm:flex-row justify-between gap-4">
+            <div class="flex items-center">
+                <img src="./img/ge-logo-green.svg" alt="Grade Endeavour" class="h-6 mr-4">
+                <a href="index.html" class="logo text-lg text-emerald-800">Grade Endeavour</a>
+            </div>
             <nav class="flex flex-wrap items-center gap-2 sm:gap-4">
                 <a href="index.html"
                     class="uppercase text-sm text-slate-500 hover:text-slate-900 transition duration-200">Homepage</a>
@@ -86,24 +89,24 @@
         <div id="course">
             <div id="course-header"
                 class="flex justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 cursor-pointer transition duration-200">
-                <h3 id="course-details-name" class="font-semibold">YYH2 Civics</h3>
+                <h3 id="course-details-name" class="font-semibold"></h3>
                 <div class="text-slate-700">
-                    <span id="course-header-ca">8.20</span>
+                    <span id="course-header-ca"></span>
                     /
-                    <span id="course-header-aa">8.20</span>
+                    <span id="course-header-aa"></span>
                     /
-                    <span id="course-header-na" class="font-semibold">8.20</span>
+                    <span id="course-header-na" class="font-semibold"></span>
                 </div>
             </div>
-            <div class="flex flex-col gap-4 hidden">
+            <div id="course-body" class="flex flex-col gap-4">
                 <div class="p-4 border-b">
                     <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
 
                     <div class="mt-4 flex justify-between">
                         <div class="flex flex-wrap gap-4 text-slate-700">
-                            <span id="course-details-ca">Current Average: 9.00</span>
-                            <span id="course-details-aa">Aimed Average: 10.00</span>
-                            <span id="course-details-na" class="font-semibold">Needed Average: 9.50</span>
+                            <span id="course-details-ca"></span>
+                            <span id="course-details-aa"></span>
+                            <span id="course-details-na" class="font-semibold"></span>
                         </div>
                         <button id="course-delete-link" class="text-rose-600 hover:text-rose-900">Delete
                             Course</button>
@@ -180,12 +183,12 @@
 
     <template id="template-course-entry">
         <tr id="course-item-row">
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700 capitalize"></td>
+            <td class="px-6 py-4 text-slate-700 capitalize"></td>
+            <td class="px-6 py-4 text-slate-700 capitalize"></td>
+            <td class="px-6 py-4 text-slate-700 capitalize"></td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                <a href="#" class="text-rose-600 hover:text-rose-900">Delete</a>
+                <button href="#" class="text-rose-600 hover:text-rose-900">Delete</button>
             </td>
         </tr>
     </template>
