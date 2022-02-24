@@ -74,19 +74,18 @@
         <form id="add-course-form" class="mt-4 flex flex-col sm:flex-row items-start sm:items-end gap-4">
             <div class="w-full sm:w-auto">
                 <label for="add-course-name" class="label">Course Name</label>
-                <input id="add-course-name" required type="text" class="input" autocomplete="off">
+                <input id="add-course-name" type="text" required autocomplete="off" class="input">
             </div>
             <div class="w-full sm:w-auto">
                 <label for="add-course-goal" class="label">Course Goal</label>
-                <input id="add-course-goal" type="number" required min="4" max="10" step="0.25" class="input"
-                    autocomplete="off">
+                <input id="add-course-goal" type="number" required min="4" max="10" step="0.25" class="input">
             </div>
             <button type="submit" class="button transition-200">
                 Add Course
             </button>
         </form>
         <form class="mt-4">
-            <input type="checkbox" id="use-ib-grading-checkbox">
+            <input id="use-ib-grading-checkbox" type="checkbox">
             <label for="use-ib-grading-checkbox" class="label">Use IB DP Grading Scale</label>
         </form>
     </div>
@@ -96,19 +95,24 @@
 
     <template id="template-course">
         <div id="course">
-            <div id="course-header"
-                class="flex justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 cursor-pointer transition duration-200">
-                <h3 id="course-details-name" class="font-semibold"></h3>
-                <div class="text-slate-700">
+            <button id="course-header" tabindex="0"
+                class="w-full flex gap-4 items-center justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 transition-200">
+                <div class="flex items-center">
+                    <h3 id="course-details-name" class="font-semibold mr-2 break-all text-left"></h3>
+                    <span id="ib-grading-pill"
+                        class="py-1 px-3 rounded-full text-xs text-white uppercase bg-emerald-800 whitespace-nowrap">IB
+                        Grading</span>
+                </div>
+                <div class="text-slate-700 whitespace-nowrap">
                     <span id="course-header-ca"></span>
                     /
                     <span id="course-header-aa"></span>
                     /
                     <span id="course-header-na" class="font-semibold"></span>
                 </div>
-            </div>
-            <div id="course-body" class="flex flex-col gap-4">
-                <div class="p-4 border-b">
+            </button>
+            <div id="course-body" class="flex flex-col">
+                <div class="px-4 py-6">
                     <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
 
                     <div class="mt-4 flex justify-between">
@@ -129,7 +133,7 @@
                     </form>
                 </div>
 
-                <div class="px-4">
+                <div id="course-entry-table" class="px-4 py-6 border-t">
                     <h3 class="uppercase text-sm text-slate-700">Course Entries</h3>
                     <div class="overflow-x-auto mt-4">
                         <table class="mt-2 w-full">
@@ -155,13 +159,14 @@
                     </div>
                 </div>
 
-                <div class="p-4 bg-gray-50">
+                <div class="px-4 py-6 bg-gray-50">
                     <h3 class="uppercase text-sm text-slate-700">Add Course Entry</h3>
                     <form id="add-course-entry-form"
                         class="mt-4 flex flex-wrap flex-col sm:flex-row items-start sm:items-end gap-4">
                         <div class="w-full sm:w-auto">
                             <label for="course-item-name" class="label">Name</label>
-                            <input id="course-item-name" name="name" type="text" required class="input">
+                            <input id="course-item-name" name="name" type="text" required autocomplete="off"
+                                class="input">
                         </div>
                         <div class="w-full sm:w-auto">
                             <label for="course-item-type" class="label">Type</label>
@@ -192,10 +197,10 @@
 
     <template id="template-course-entry">
         <tr id="course-item-row">
-            <td class="px-6 py-4 text-slate-700 capitalize"></td>
-            <td class="px-6 py-4 text-slate-700 capitalize"></td>
-            <td class="px-6 py-4 text-slate-700 capitalize"></td>
-            <td class="px-6 py-4 text-slate-700 capitalize"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
+            <td class="px-6 py-4 text-slate-700"></td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
                 <button href="#" class="text-rose-600 hover:text-rose-900">Delete</button>
             </td>
