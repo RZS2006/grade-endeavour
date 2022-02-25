@@ -69,8 +69,8 @@
         </div>
     </header>
 
-    <div class="wrapper py-10">
-        <h2 class="text-3xl my-custom-style">Add New Course</h2>
+    <div class="wrapper py-8 sm:py-12">
+        <h2 class="text-3xl">Add New Course</h2>
         <form id="add-course-form" class="mt-4 flex flex-col sm:flex-row items-start sm:items-end gap-4">
             <div class="w-full sm:w-auto">
                 <label for="add-course-name" class="label">Course Name</label>
@@ -89,7 +89,11 @@
             <label for="use-ib-grading-checkbox" class="label">Use IB DP Grading Scale</label>
         </form>
     </div>
-    <div id="course-container" class="wrapper flex flex-col gap-4"></div>
+    <div class="wrapper">
+        <span id="courses-count" class="text-slate-500 text-sm"></span>
+        <div id="course-container" class="mt-4 flex flex-col gap-4"></div>
+    </div>
+
 
     <!-- Templates -->
 
@@ -104,24 +108,24 @@
                         Grading</span>
                 </div>
                 <div class="text-slate-700 whitespace-nowrap">
-                    <span id="course-header-ca"></span>
+                    <span id="course-header-ca" aria-label="current average"></span>
                     /
-                    <span id="course-header-aa"></span>
+                    <span id="course-header-aa" aria-label="aimed average"></span>
                     /
-                    <span id="course-header-na" class="font-semibold"></span>
+                    <span id="course-header-na" aria-label="needed average" class="font-semibold"></span>
                 </div>
             </button>
             <div id="course-body" class="flex flex-col">
                 <div class="px-4 py-6">
-                    <h3 class="uppercase text-sm text-slate-700">Course Stats</h3>
+                    <h3 class="label">Course Stats</h3>
 
                     <div class="mt-4 flex justify-between">
-                        <div class="flex flex-wrap gap-4 text-slate-700">
-                            <span id="course-details-ca"></span>
-                            <span id="course-details-aa"></span>
-                            <span id="course-details-na" class="font-semibold"></span>
+                        <div aria-live="polite" class="flex flex-wrap gap-4 text-slate-700">
+                            <span id="course-details-ca" aria-label="current average"></span>
+                            <span id="course-details-aa" aria-label="aimed average"></span>
+                            <span id="course-details-na" aria-label="needed average" class="font-semibold"></span>
                         </div>
-                        <button id="course-delete-link" class="text-rose-600 hover:text-rose-900">Delete
+                        <button id="course-delete-link" class="text-rose-600 hover:text-rose-900 text-sm">Delete
                             Course</button>
                     </div>
                     <form class="mt-4">
@@ -134,8 +138,9 @@
                 </div>
 
                 <div id="course-entry-table" class="px-4 py-6 border-t">
-                    <h3 class="uppercase text-sm text-slate-700">Course Entries</h3>
+                    <h3 class="label">Course Entries</h3>
                     <div class="overflow-x-auto mt-4">
+                        <span id="course-entry-count" class="text-slate-500 text-sm"></span>
                         <table class="mt-2 w-full">
                             <thead class="bg-gray-50">
                                 <th scope="col"
@@ -160,7 +165,7 @@
                 </div>
 
                 <div class="px-4 py-6 bg-gray-50">
-                    <h3 class="uppercase text-sm text-slate-700">Add Course Entry</h3>
+                    <h3 class="label">Add Course Entry</h3>
                     <form id="add-course-entry-form"
                         class="mt-4 flex flex-wrap flex-col sm:flex-row items-start sm:items-end gap-4">
                         <div class="w-full sm:w-auto">
@@ -197,11 +202,11 @@
 
     <template id="template-course-entry">
         <tr id="course-item-row">
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 text-slate-700"></td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
+            <td id="course-entry-name" class="px-6 py-4 text-slate-700"></td>
+            <td id="course-entry-type" class="px-6 py-4 text-slate-700"></td>
+            <td id="course-entry-date" class="px-6 py-4 text-slate-700"></td>
+            <td id="course-entry-grade" class="px-6 py-4 text-slate-700"></td>
+            <td id="course-entry-delete" class="px-6 py-4 whitespace-nowrap text-right text-sm">
                 <button href="#" class="text-rose-600 hover:text-rose-900">Delete</button>
             </td>
         </tr>

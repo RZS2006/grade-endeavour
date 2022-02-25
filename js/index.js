@@ -5,11 +5,16 @@ import {
 	cloneTemplate,
 	setInnerText,
 	addClass,
+	isBetween,
+	capitalizeString,
+	formatDate,
 } from './utilities.js';
 
 // Constants
 
 const addCourseForm = document.querySelector('#add-course-form');
+const addCourseFormName = document.querySelector('#add-course-name');
+const addCourseFormGoal = document.querySelector('#add-course-goal');
 const ibGradingCheckbox = document.querySelector('#use-ib-grading-checkbox');
 const courseContainer = document.querySelector('#course-container');
 
@@ -25,31 +30,40 @@ let useIbGradingScale = fetchFromLocalStorage('use-ib-grading-scale', false);
 
 // Functions
 
+const findCourseById = (id, callback) => {
+	const course = courses.find((course) => course.id === id);
+	if (course) {
+		callback(course);
+	}
+};
+
+const saveAndRenderCourses = (courses) => {
+	saveToLocalStorage('courses', courses);
+	renderCourses(courses);
+};
+
 const addCourse = (name, goal, useIbGradingScale) => {
 	courses.push({
 		id: Date.now(),
 		name,
 		goal,
-		courseEntries: [],
-		forecastSpan: 1,
-		isOpen: false,
 		useIbGradingScale,
+		isOpen: false,
+		forecastSpan: 1,
+		courseEntries: [],
 	});
 
-	saveToLocalStorage('courses', courses);
-	renderCourses(courses);
+	saveAndRenderCourses(courses);
 };
 
 const deleteCourse = (courseId) => {
 	courses = courses.filter((course) => course.id !== courseId);
 
-	saveToLocalStorage('courses', courses);
-	renderCourses(courses);
+	saveAndRenderCourses(courses);
 };
 
 const addCourseEntry = (name, type, date, grade, courseId) => {
-	const course = courses.find((course) => course.id === courseId);
-	if (course) {
+	findCourseById(courseId, (course) => {
 		course.courseEntries.push({
 			id: Date.now(),
 			name,
@@ -57,46 +71,45 @@ const addCourseEntry = (name, type, date, grade, courseId) => {
 			date,
 			grade,
 		});
-	}
+	});
 
-	saveToLocalStorage('courses', courses);
-	renderCourses(courses);
+	saveAndRenderCourses(courses);
 };
 
 const deleteCourseEntry = (entryId, courseId) => {
-	const course = courses.find((course) => course.id === courseId);
-	if (course) {
+	findCourseById(courseId, (course) => {
 		course.courseEntries = course.courseEntries.filter(
 			(entry) => entry.id !== entryId
 		);
-	}
+	});
 
-	saveToLocalStorage('courses', courses);
-	renderCourses(courses);
+	saveAndRenderCourses(courses);
 };
 
 const changeForecastSpan = (courseId, value) => {
-	const course = courses.find((course) => course.id === courseId);
-	if (course) {
+	findCourseById(courseId, (course) => {
 		course.forecastSpan = value;
-	}
+	});
 
-	saveToLocalStorage('courses', courses);
-	renderCourses(courses);
+	saveAndRenderCourses(courses);
 };
 
 const changeDropdownOpen = (courseId, value) => {
-	const course = courses.find((course) => course.id === courseId);
-	if (course) {
+	findCourseById(courseId, (course) => {
 		course.isOpen = value || !course.isOpen;
-	}
+	});
 
-	saveToLocalStorage('courses', courses);
-	renderCourses(courses);
+	saveAndRenderCourses(courses);
 };
 
 const renderCourses = (courses) => {
 	emptyElement(courseContainer);
+
+	setInnerText(
+		document,
+		'#courses-count',
+		`${courses.length} course${courses.length === 1 ? '' : 's'}`
+	);
 
 	courses.forEach((course) => {
 		const {
@@ -135,13 +148,12 @@ const renderCourses = (courses) => {
 		).toFixed(2);
 		const aimedAverage = goal.toFixed(2);
 
+		const displayedNeededAverage =
+			currentAverage <= aimedAverage ? neededAverage : '-';
+
 		setInnerText(courseClone, '#course-header-ca', currentAverage);
 		setInnerText(courseClone, '#course-header-aa', aimedAverage);
-		setInnerText(
-			courseClone,
-			'#course-header-na',
-			currentAverage <= aimedAverage ? neededAverage : '-'
-		);
+		setInnerText(courseClone, '#course-header-na', displayedNeededAverage);
 
 		setInnerText(
 			courseClone,
@@ -156,7 +168,7 @@ const renderCourses = (courses) => {
 		setInnerText(
 			courseClone,
 			'#course-details-na',
-			`Needed: ${currentAverage <= aimedAverage ? neededAverage : '-'}`
+			`Needed: ${displayedNeededAverage}`
 		);
 
 		const forecastSpanInput = courseClone.querySelector('#forecast-span');
@@ -165,7 +177,7 @@ const renderCourses = (courses) => {
 		forecastSpanInput.addEventListener('change', (e) => {
 			const value = parseInt(e.target.value);
 
-			if (value >= MIN_FORECAST_SPAN && value <= MAX_FORECAST_SPAN) {
+			if (isBetween(value, MIN_FORECAST_SPAN, MAX_FORECAST_SPAN)) {
 				changeForecastSpan(courseId, value);
 			}
 		});
@@ -193,6 +205,14 @@ const renderCourses = (courses) => {
 			addClass(courseClone, '#course-entry-table', 'hidden');
 		}
 
+		setInnerText(
+			courseClone,
+			'#course-entry-count',
+			`${courseEntries.length} course entr${
+				courseEntries.length === 1 ? 'y' : 'ies'
+			}`
+		);
+
 		// Render Course Entries
 
 		courseEntries
@@ -210,19 +230,27 @@ const renderCourses = (courses) => {
 					.querySelector('#course-item-row')
 					.setAttribute('data-key', entryId);
 
-				courseEntryClone.querySelectorAll('td')[0].innerText = name;
-				courseEntryClone.querySelectorAll('td')[1].innerText =
-					type.charAt(0).toUpperCase() + type.slice(1);
-				courseEntryClone.querySelectorAll('td')[2].innerText = new Date(
-					date
-				).toLocaleDateString();
-				courseEntryClone.querySelectorAll('td')[3].innerText =
-					grade.toFixed(2);
+				setInnerText(courseEntryClone, '#course-entry-name', name);
+				setInnerText(
+					courseEntryClone,
+					'#course-entry-type',
+					capitalizeString(type)
+				);
+				setInnerText(
+					courseEntryClone,
+					'#course-entry-date',
+					formatDate(date)
+				);
+				setInnerText(
+					courseEntryClone,
+					'#course-entry-grade',
+					grade.toFixed(2)
+				);
 
 				// Delete Course Entry
 
 				courseEntryClone
-					.querySelectorAll('td')[4]
+					.querySelector('#course-entry-delete')
 					.addEventListener('click', () =>
 						deleteCourseEntry(entryId, courseId)
 					);
@@ -266,10 +294,9 @@ const changeGradingScale = (useIbGradingScale) => {
 	MAX_GRADE = useIbGradingScale ? 7 : 10;
 	GRADE_STEP = useIbGradingScale ? 1 : 0.25;
 
-	const courseGoalInput = addCourseForm.querySelector('#add-course-goal');
-	courseGoalInput.setAttribute('min', MIN_GRADE);
-	courseGoalInput.setAttribute('max', MAX_GRADE);
-	courseGoalInput.setAttribute('step', GRADE_STEP);
+	addCourseFormGoal.setAttribute('min', MIN_GRADE);
+	addCourseFormGoal.setAttribute('max', MAX_GRADE);
+	addCourseFormGoal.setAttribute('step', GRADE_STEP);
 
 	console.info('Using IB DP Grading Scale:', useIbGradingScale);
 };
@@ -279,21 +306,14 @@ const changeGradingScale = (useIbGradingScale) => {
 addCourseForm.addEventListener('submit', (e) => {
 	e.preventDefault();
 
-	const courseNameInput = addCourseForm.querySelector('#add-course-name');
-	const courseGoalInput = addCourseForm.querySelector('#add-course-goal');
+	const courseName = addCourseFormName.value.trim();
+	const courseGoal = parseFloat(addCourseFormGoal.value);
 
-	const courseName = courseNameInput.value.trim();
-	const courseGoal = parseFloat(courseGoalInput.value);
-
-	if (
-		courseName.length > 0 &&
-		courseGoal >= MIN_GRADE &&
-		courseGoal <= MAX_GRADE
-	) {
+	if (courseName.length > 0 && isBetween(courseGoal, MIN_GRADE, MAX_GRADE)) {
 		addCourse(courseName, courseGoal, useIbGradingScale);
 
-		courseNameInput.value = '';
-		courseGoalInput.value = '';
+		addCourseFormName.value = '';
+		addCourseFormGoal.value = '';
 	}
 });
 

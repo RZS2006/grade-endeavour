@@ -16,3 +16,15 @@ export const setInnerText = (parent, elementId, text) => {
 export const addClass = (parent, elementId, className) => {
 	parent.querySelector(elementId).classList.add(className);
 };
+
+export const isBetween = (value, min, max) => {
+	return value >= min && value <= max;
+};
+
+export const capitalizeString = (string) => {
+	return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
+export const formatDate = (date) => {
+	return new Date(date).toLocaleDateString();
+};
