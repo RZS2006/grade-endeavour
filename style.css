@@ -22,3 +22,7 @@ body {
 footer {
 	margin-top: auto;
 }
+
+.grow {
+	flex: 1;
+}
