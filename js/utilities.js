@@ -28,3 +28,7 @@ export const capitalizeString = (string) => {
 export const formatDate = (date) => {
 	return new Date(date).toLocaleDateString();
 };
+
+export const getArrayLengthText = (array, singular, plural) => {
+	return `${array.length} ${array.length === 1 ? singular : plural}`;
+};

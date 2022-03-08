@@ -116,12 +116,13 @@
             <button id="course-header" tabindex="0"
                 class="w-full flex gap-4 items-center justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 transition-200">
                 <div class="flex items-center">
-                    <h3 id="course-details-name" class="font-semibold mr-2 break-all text-left"></h3>
+                    <h3 id="course-details-name" class="font-semibold mr-2 break-all text-left text-sm sm:text-base">
+                    </h3>
                     <span id="ib-grading-pill"
                         class="py-1 px-3 rounded-full text-xs text-white uppercase bg-emerald-800 whitespace-nowrap">IB
                         Grading</span>
                 </div>
-                <div class="text-slate-700 whitespace-nowrap">
+                <div class="text-slate-700 whitespace-nowrap text-sm sm:text-base">
                     <span id="course-header-ca" aria-label="current average"></span>
                     /
                     <span id="course-header-aa" aria-label="aimed average"></span>
@@ -133,8 +134,9 @@
                 <div class="px-4 py-6">
                     <h3 class="label">Course Stats</h3>
 
-                    <div class="mt-4 flex justify-between">
-                        <div aria-live="polite" class="flex flex-wrap gap-4 text-slate-700">
+                    <div class="mt-4 flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center">
+                        <div aria-live="polite"
+                            class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 text-slate-700 text-sm sm:text-base">
                             <span id="course-details-ca" aria-label="current average"></span>
                             <span id="course-details-aa" aria-label="aimed average"></span>
                             <span id="course-details-na" aria-label="needed average" class="font-semibold"></span>
@@ -142,11 +144,14 @@
                         <button id="course-delete-link" class="text-rose-600 hover:text-rose-900 text-sm">Delete
                             Course</button>
                     </div>
-                    <form class="mt-4">
+                    <form class="mt-4 flex flex-col sm:flex-row gap-4">
                         <div class="w-full sm:w-auto">
-                            <label for="forecast-span" class="label">Needed Average Forecast Span</label>
-                            <input id="forecast-span" type="number" required value="1" min="1" max="10" step="1"
-                                class="input block w-full sm:w-auto" autocomplete="off">
+                            <label for="forecast-span" class="label">Forecast Span</label>
+                            <input id="forecast-span" type="number" required min="1" max="10" step="1" class="input">
+                        </div>
+                        <div class="w-full sm:w-auto">
+                            <label for="tolerance" class="label">Tolerance</label>
+                            <input id="tolerance" type="number" required lang="en" step="0.05" class="input">
                         </div>
                     </form>
                 </div>
@@ -216,10 +221,10 @@
 
     <template id="template-course-entry">
         <tr id="course-item-row">
-            <td id="course-entry-name" class="px-6 py-4 text-slate-700"></td>
-            <td id="course-entry-type" class="px-6 py-4 text-slate-700"></td>
-            <td id="course-entry-date" class="px-6 py-4 text-slate-700"></td>
-            <td id="course-entry-grade" class="px-6 py-4 text-slate-700"></td>
+            <td id="course-entry-name" class="px-6 py-4 text-slate-700 text-sm sm:text-base"></td>
+            <td id="course-entry-type" class="px-6 py-4 text-slate-700 text-sm sm:text-base"></td>
+            <td id="course-entry-date" class="px-6 py-4 text-slate-700 text-sm sm:text-base"></td>
+            <td id="course-entry-grade" class="px-6 py-4 text-slate-700 text-sm sm:text-base"></td>
             <td id="course-entry-delete" class="px-6 py-4 whitespace-nowrap text-right text-sm">
                 <button href="#" class="text-rose-600 hover:text-rose-900">Delete</button>
             </td>

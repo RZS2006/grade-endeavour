@@ -1,6 +1,11 @@
 import { fetchFromLocalStorage, saveToLocalStorage } from './local-storage.js';
 import { getCurrentAverage, getNeededAverage } from './averages.js';
 import {
+	CONSTANTS,
+	getScaleByName,
+	getScaleByBoolean,
+} from './grading-scale.js';
+import {
 	emptyElement,
 	cloneTemplate,
 	setInnerText,
@@ -8,6 +13,7 @@ import {
 	isBetween,
 	capitalizeString,
 	formatDate,
+	getArrayLengthText,
 } from './utilities.js';
 
 // Constants
@@ -18,9 +24,9 @@ const addCourseFormGoal = document.querySelector('#add-course-goal');
 const ibGradingCheckbox = document.querySelector('#use-ib-grading-checkbox');
 const courseContainer = document.querySelector('#course-container');
 
-let MIN_GRADE = 4;
-let MAX_GRADE = 10;
-let GRADE_STEP = 0.25;
+let MIN_GRADE = getScaleByName(CONSTANTS.DEFAULT).min;
+let MAX_GRADE = getScaleByName(CONSTANTS.DEFAULT).max;
+let GRADE_STEP = getScaleByName(CONSTANTS.DEFAULT).step;
 
 const MIN_FORECAST_SPAN = 1;
 const MAX_FORECAST_SPAN = 10;
@@ -50,6 +56,7 @@ const addCourse = (name, goal, useIbGradingScale) => {
 		useIbGradingScale,
 		isOpen: false,
 		forecastSpan: 1,
+		tolerance: 0,
 		courseEntries: [],
 	});
 
@@ -94,6 +101,14 @@ const changeForecastSpan = (courseId, value) => {
 	saveAndRenderCourses(courses);
 };
 
+const changeTolerance = (courseId, value) => {
+	findCourseById(courseId, (course) => {
+		course.tolerance = value;
+	});
+
+	saveAndRenderCourses(courses);
+};
+
 const changeDropdownOpen = (courseId, value) => {
 	findCourseById(courseId, (course) => {
 		course.isOpen = value || !course.isOpen;
@@ -108,7 +123,7 @@ const renderCourses = (courses) => {
 	setInnerText(
 		document,
 		'#courses-count',
-		`${courses.length} course${courses.length === 1 ? '' : 's'}`
+		getArrayLengthText(courses, 'course', 'courses')
 	);
 
 	courses.forEach((course) => {
@@ -118,6 +133,7 @@ const renderCourses = (courses) => {
 			goal,
 			courseEntries,
 			forecastSpan,
+			tolerance,
 			isOpen,
 			useIbGradingScale,
 		} = course;
@@ -140,36 +156,44 @@ const renderCourses = (courses) => {
 
 		setInnerText(courseClone, '#course-details-name', name);
 
-		const currentAverage = getCurrentAverage(courseEntries).toFixed(2);
+		const currentAverage = getCurrentAverage(courseEntries);
 		const neededAverage = getNeededAverage(
 			courseEntries,
 			goal,
-			forecastSpan
-		).toFixed(2);
-		const aimedAverage = goal.toFixed(2);
+			forecastSpan,
+			tolerance
+		);
+		const aimedAverage = goal - tolerance;
 
+		const displayedCurrentAverage = currentAverage.toFixed(2);
 		const displayedNeededAverage =
-			currentAverage <= aimedAverage ? neededAverage : '-';
+			currentAverage <= aimedAverage ? neededAverage.toFixed(2) : '-';
+		const displayedAimedAverage =
+			goal === aimedAverage
+				? aimedAverage.toFixed(2)
+				: `${goal.toFixed(2)} ~ ${aimedAverage.toFixed(2)}`;
 
-		setInnerText(courseClone, '#course-header-ca', currentAverage);
-		setInnerText(courseClone, '#course-header-aa', aimedAverage);
+		setInnerText(courseClone, '#course-header-ca', displayedCurrentAverage);
+		setInnerText(courseClone, '#course-header-aa', displayedAimedAverage);
 		setInnerText(courseClone, '#course-header-na', displayedNeededAverage);
 
 		setInnerText(
 			courseClone,
 			'#course-details-ca',
-			`Current: ${currentAverage}`
+			`Current: ${displayedCurrentAverage}`
 		);
 		setInnerText(
 			courseClone,
 			'#course-details-aa',
-			`Aimed: ${aimedAverage}`
+			`Aimed: ${displayedAimedAverage}`
 		);
 		setInnerText(
 			courseClone,
 			'#course-details-na',
 			`Needed: ${displayedNeededAverage}`
 		);
+
+		// Forecast Input
 
 		const forecastSpanInput = courseClone.querySelector('#forecast-span');
 
@@ -179,6 +203,45 @@ const renderCourses = (courses) => {
 
 			if (isBetween(value, MIN_FORECAST_SPAN, MAX_FORECAST_SPAN)) {
 				changeForecastSpan(courseId, value);
+			} else {
+				forecastSpanInput.value =
+					value > MAX_FORECAST_SPAN
+						? MAX_FORECAST_SPAN
+						: MIN_FORECAST_SPAN;
+				changeForecastSpan(courseId, parseInt(forecastSpanInput.value));
+			}
+		});
+
+		// Tolerance Input
+
+		const toleranceInput = courseClone.querySelector('#tolerance');
+
+		toleranceInput.value = tolerance;
+
+		const COURSE_MIN_GRADE = getScaleByBoolean(useIbGradingScale).min;
+		const COURSE_MAX_GRADE = getScaleByBoolean(useIbGradingScale).max;
+
+		const TOLERANCE_MAX = Math.abs(goal - COURSE_MIN_GRADE);
+		const TOLERANCE_MIN = Math.abs(COURSE_MAX_GRADE - goal) * -1;
+
+		toleranceInput.setAttribute('min', TOLERANCE_MIN);
+		toleranceInput.setAttribute('max', TOLERANCE_MAX);
+
+		toleranceInput.addEventListener('change', (e) => {
+			const COURSE_MIN_GRADE = getScaleByBoolean(useIbGradingScale).min;
+			const COURSE_MAX_GRADE = getScaleByBoolean(useIbGradingScale).max;
+
+			const value = parseFloat(e.target.value);
+
+			const TOLERANCE_MAX = Math.abs(goal - COURSE_MIN_GRADE);
+			const TOLERANCE_MIN = Math.abs(COURSE_MAX_GRADE - goal) * -1;
+
+			if (isBetween(value, TOLERANCE_MIN, TOLERANCE_MAX)) {
+				changeTolerance(courseId, value);
+			} else {
+				toleranceInput.value =
+					value > TOLERANCE_MAX ? TOLERANCE_MAX : TOLERANCE_MIN;
+				changeTolerance(courseId, parseFloat(toleranceInput.value));
 			}
 		});
 
@@ -194,11 +257,17 @@ const renderCourses = (courses) => {
 
 		const courseEntryGradeInput =
 			courseClone.querySelector('#course-item-grade');
-		courseEntryGradeInput.setAttribute('min', useIbGradingScale ? 1 : 4);
-		courseEntryGradeInput.setAttribute('max', useIbGradingScale ? 7 : 10);
+		courseEntryGradeInput.setAttribute(
+			'min',
+			getScaleByBoolean(useIbGradingScale).min
+		);
+		courseEntryGradeInput.setAttribute(
+			'max',
+			getScaleByBoolean(useIbGradingScale).max
+		);
 		courseEntryGradeInput.setAttribute(
 			'step',
-			useIbGradingScale ? 1 : 0.25
+			getScaleByBoolean(useIbGradingScale).step
 		);
 
 		if (courseEntries.length === 0) {
@@ -208,9 +277,7 @@ const renderCourses = (courses) => {
 		setInnerText(
 			courseClone,
 			'#course-entry-count',
-			`${courseEntries.length} course entr${
-				courseEntries.length === 1 ? 'y' : 'ies'
-			}`
+			getArrayLengthText(courseEntries, 'course entry', 'course entries')
 		);
 
 		// Render Course Entries
@@ -287,12 +354,10 @@ const renderCourses = (courses) => {
 	});
 };
 
-// TODO: EXTRACT
-
 const changeGradingScale = (useIbGradingScale) => {
-	MIN_GRADE = useIbGradingScale ? 1 : 4;
-	MAX_GRADE = useIbGradingScale ? 7 : 10;
-	GRADE_STEP = useIbGradingScale ? 1 : 0.25;
+	MIN_GRADE = getScaleByBoolean(useIbGradingScale).min;
+	MAX_GRADE = getScaleByBoolean(useIbGradingScale).max;
+	GRADE_STEP = getScaleByBoolean(useIbGradingScale).step;
 
 	addCourseFormGoal.setAttribute('min', MIN_GRADE);
 	addCourseFormGoal.setAttribute('max', MAX_GRADE);
