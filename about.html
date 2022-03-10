@@ -6,7 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Primary Meta Tags -->
     <title>About | Grade Endeavour</title>
+    <meta name="title" content="About | Grade Endeavour">
+    <meta name="description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gradeendeavour.netlify.app/">
+    <meta property="og:title" content="About | Grade Endeavour">
+    <meta property="og:description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+    <meta property="og:image" content="https://gradeendeavour.netlify.app/img/forest.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gradeendeavour.netlify.app/">
+    <meta property="twitter:title" content="About | Grade Endeavour">
+    <meta property="twitter:description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+    <meta property="twitter:image" content="https://gradeendeavour.netlify.app/img/forest.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,7 +68,7 @@
                 <img src="./img/ge-logo-green.svg" aria-hidden="true" class="h-6 mr-4">
                 Grade Endeavour
             </a>
-            <nav class="flex items-center gap-4">
+            <nav class="flex items-center gap-6">
                 <a href="index.html"
                     class="uppercase text-sm text-slate-500 hover:text-slate-900 transition-200">Homepage</a>
                 <a href="about.html"
@@ -61,9 +81,9 @@
 
     <main class="mb-8">
         <section class="wrapper">
-            <h1 class="text-6xl sm:text-8xl uppercase py-12 sm:py-16 text-emerald-800">Our Story</h1>
+            <h1 class="text-6xl sm:text-8xl uppercase py-12 sm:py-16">Our Story</h1>
             <div class="flex flex-col md:flex-row gap-8">
-                <div class="grow flex flex-col gap-8 leading-8 text-slate-900 text-sm">
+                <div class="grow flex flex-col gap-8 leading-7 text-slate-700">
                     <p>We are a new groundbreaking, bewildering, avant-garde, staggering, astounding,
                         stupefying, breathtaking, perplexing, confounding, sky-splitting, innovative, mindblowing team
                         of
@@ -71,13 +91,13 @@
                         offering them a powerful, intuitive, sleek web application to manage their school grades. Using
                         it does come with some minor side effects, namely, the inability to access you file management
                         and sporadic Windows error sounds caused by a negligible computer virus. Our team is essentially
-                        a dictatorship, which is ruled by our CEO, Ramirez Bozontin. He is the
+                        a plutocracy, which is ruled by our CEO, Ramirez Bozontin. He is the
                         lead designer, lead develover, and the spokesperson of Grade Endeavour.</p>
                     <p>Ramirez pushes 🅿 every day and night to deliver on the perfect product. Ramirez was once a
                         young, aspiring individual fascinated by biology, but he was unfortunately outshined by his
                         peers. Ramirez dropped out of primary school at the age of 15.
                         The motivation he built from being humiliated helped him to step up and help others. Wise words
-                        from Ramirez: “Pointers in the Patek and my piece, I'm pushin' 🅿.”</p>
+                        from Ramirez: “If you achieve the grades you once endeavoured, you're pushin' 🅿.”</p>
                     <p>Grade Endeavour is a carbon-neutral company. We are planning to halve our carbon footprint by
                         2030 and completely eradicate in by 2045. Donate to us in order to support our journey to
                         establishing a monopoly in our market sector.</p>
@@ -90,11 +110,13 @@
         </section>
     </main>
 
-    <footer class="bg-gray-200 py-4">
-        <div class="wrapper text-slate-700 text-xs text-center">© Copyright 2022 Grade Endeavour. All Rights
-            Reserved.
-        </div>
+    <footer class="bg-gray-100 py-4">
+        <div id="copyright" class="wrapper text-slate-500 text-xs text-center"></div>
     </footer>
 </body>
+
+<script>
+    document.querySelector("#copyright").innerText = `© Copyright ${new Date().getFullYear()} Grade Endeavour. All Rights Reserved.`
+</script>
 
 </html>

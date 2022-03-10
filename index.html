@@ -6,7 +6,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Primary Meta Tags -->
     <title>Homepage | Grade Endeavour</title>
+    <meta name="title" content="Homepage | Grade Endeavour">
+    <meta name="description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gradeendeavour.netlify.app/">
+    <meta property="og:title" content="Homepage | Grade Endeavour">
+    <meta property="og:description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+    <meta property="og:image" content="https://gradeendeavour.netlify.app/img/forest.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gradeendeavour.netlify.app/">
+    <meta property="twitter:title" content="Homepage | Grade Endeavour">
+    <meta property="twitter:description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+    <meta property="twitter:image" content="https://gradeendeavour.netlify.app/img/forest.jpg">
+
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,6 +43,20 @@
         @layer base {
             .wrapper {
                 @apply px-6 sm:container mx-auto
+            }
+        }
+
+        @layer components {
+            .button {        
+                @apply py-2 px-3 uppercase font-semibold text-white text-sm rounded bg-emerald-800 hover:bg-emerald-700 whitespace-nowrap     
+            }  
+
+            .button--white {
+                @apply py-2 px-3 uppercase font-semibold text-emerald-800 text-sm rounded bg-white hover:bg-gray-200 whitespace-nowrap
+            }
+
+            .button--white-outline {
+                @apply py-2 px-3 uppercase font-semibold text-white text-sm rounded bg-transparent hover:bg-gray-200/10 whitespace-nowrap border-2 border-white box-border
             }
         }
 
@@ -48,7 +83,7 @@
                 <img src="./img/ge-logo-green.svg" aria-hidden="true" class="h-6 mr-4">
                 Grade Endeavour
             </a>
-            <nav class="flex items-center gap-4">
+            <nav class="flex items-center gap-6">
                 <a href="index.html"
                     class="uppercase text-sm text-slate-500 hover:text-slate-900 transition-200">Homepage</a>
                 <a href="about.html"
@@ -59,14 +94,101 @@
         </div>
     </header>
 
-    <main class="mb-8"></main>
+    <main class="mb-8">
+        <section class="bg-emerald-800 text-white">
+            <div class="wrapper py-20">
+                <h1 class="text-6xl sm:text-8xl">Achieve Your Grade Endeavours!</h1>
+                <p class="text-base sm:text-lg mt-4">Level up your school grades by managing your courses and goals on
+                    Grade Endeavour. See
+                    what courses you need to put more effort into and what courses you are all clear!</p>
+                <div class="flex gap-4 mt-8">
+                    <a href="app.html" class="button--white px-6 py-3 transition-200">Go To App</a>
+                    <a href="about.html" class="button--white-outline px-6 py-3 transition-200">Learn More</a>
+                </div>
+            </div>
+        </section>
+        <section class="bg-gray-100 py-8 sm:py-12">
+            <div class="wrapper">
+                <h2 class="text-4xl">Features</h2>
+                <div class="grid sm:grid-cols-2 md:grid-cols-4 mt-8 gap-8">
+                    <div>
+                        <img src="./icons/bolt_black_24dp.svg" aria-hidden="true" class="w-8">
+                        <h3 class="font-semibold mt-2">Blazing Fast</h3>
+                        <p class="text-slate-700 mt-2 text-sm leading-7">Our web application is faster than Baby
+                            Zombies. There
+                            are no refreshes, no redirects, no loading, just three simple HTML pages.</p>
+                    </div>
+                    <div>
+                        <img src="./icons/trending_up_black_24dp.svg" aria-hidden="true" class="w-8">
+                        <h3 class="font-semibold mt-2">Guaranteed Results</h3>
+                        <p class="text-slate-700 mt-2 text-sm leading-7">We have brought many students to greatness by
+                            teaching
+                            them to unlock their potential. We have users admitted to world's top universities.</p>
+                    </div>
+                    <div>
+                        <img src="./icons/lock_black_24dp.svg" aria-hidden="true" class="w-8">
+                        <h3 class="font-semibold mt-2">Forever Secure</h3>
+                        <p class="text-slate-700 mt-2 text-sm leading-7">There are no privacy issues here. We don't even
+                            have a
+                            server or database, all your information is reliably stored in your own browser.</p>
+                    </div>
+                    <div>
+                        <img src="./icons/groups_black_24dp.svg" aria-hidden="true" class="w-8">
+                        <h3 class="font-semibold mt-2">Passionate Community</h3>
+                        <p class="text-slate-700 mt-2 text-sm leading-7">Our loyal user community is massive. We have
+                            user all
+                            over the
+                            universe. Our users have no complaints whatsoever, our service is perfectly perfect.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        </section>
+        <section class="py-8 sm:py-12">
+            <div class="wrapper flex flex-col gap-8">
+                <h2 class="text-4xl">Tutorial</h2>
+                <div>
+                    <h3 class="text-xl sm:text-2xl">1. Add Courses</h3>
+                    <p class="text-slate-700 mt-2 leading-7">To begin, input the course name and course grade goal, and
+                        add it. A
+                        course grade goal can be valid grade between 4 to 10, or 1 to 7 for IB students.
+                        After clicking the submit button, the application will create a collapsible dropdown for that
+                        course. This shows the three important numbers that you need to know: your current average, your
+                        aimed average, and your needed average.</p>
+                </div>
+                <div>
+                    <h3 class="text-xl sm:text-2xl">2. Add Course Entries</h3>
+                    <p class="text-slate-700 mt-2 leading-7">For the application to function, you must also input course
+                        entries.
+                        To add course entries, input the name, type, date, and grade of the course entry. The course
+                        entry type can be, for example, an exam or an essay. The course entry grade must also be a valid
+                        grade depending on the course's grading scale. After adding the course entry, the app will
+                        automatically calculate you averages. It lists all your course entries in chronological order.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl sm:text-2xl">3. Endeavour!</h3>
+                    <p class="text-slate-700 mt-2 leading-7">All you have to do now is glimpse at your needed average to
+                        see what
+                        you need to effortlessly practice more. You can also edit your course goal through the forecast
+                        span and tolerance. By increasing forecast span, the app calculate the needed average of you
+                        next n course entries, so you spread out your effort. By increasing tolerance, you temporarily
+                        adjust you course goal to something tolerable to make it easier to achieve it. For example,
+                        tolerating 8.80 from 9.00
+                        can dampen your required effort.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
-    <footer class="bg-gray-200 py-4">
-        <div class="wrapper text-slate-700 text-xs text-center">© Copyright 2022 Grade Endeavour. All Rights
-            Reserved.
-        </div>
+    <footer class="bg-gray-100 py-4">
+        <div id="copyright" class="wrapper text-slate-500 text-xs text-center"></div>
     </footer>
 
 </body>
+
+<script>
+    document.querySelector("#copyright").innerText = `© Copyright ${new Date().getFullYear()} Grade Endeavour. All Rights Reserved.`
+</script>
 
 </html>

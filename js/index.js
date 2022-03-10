@@ -180,18 +180,10 @@ const renderCourses = (courses) => {
 		setInnerText(
 			courseClone,
 			'#course-details-ca',
-			`Current: ${displayedCurrentAverage}`
+			displayedCurrentAverage
 		);
-		setInnerText(
-			courseClone,
-			'#course-details-aa',
-			`Aimed: ${displayedAimedAverage}`
-		);
-		setInnerText(
-			courseClone,
-			'#course-details-na',
-			`Needed: ${displayedNeededAverage}`
-		);
+		setInnerText(courseClone, '#course-details-aa', displayedAimedAverage);
+		setInnerText(courseClone, '#course-details-na', displayedNeededAverage);
 
 		// Forecast Input
 

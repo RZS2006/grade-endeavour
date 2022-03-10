@@ -6,7 +6,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Primary Meta Tags -->
     <title>Application | Grade Endeavour</title>
+    <meta name="title" content="Application | Grade Endeavour">
+    <meta name="description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gradeendeavour.netlify.app/">
+    <meta property="og:title" content="Application | Grade Endeavour">
+    <meta property="og:description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+    <meta property="og:image" content="https://gradeendeavour.netlify.app/img/forest.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://gradeendeavour.netlify.app/">
+    <meta property="twitter:title" content="Application | Grade Endeavour">
+    <meta property="twitter:description"
+        content="Level up your school grades by managing your courses and goals on Grade Endeavour. See what courses you need to put more effort into and what courses you are all clear!">
+    <meta property="twitter:image" content="https://gradeendeavour.netlify.app/img/forest.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,7 +85,7 @@
                 <img src="./img/ge-logo-green.svg" aria-hidden="true" class="h-6 mr-4">
                 Grade Endeavour
             </a>
-            <nav class="flex items-center gap-4">
+            <nav class="flex items-center gap-6">
                 <a href="index.html"
                     class="uppercase text-sm text-slate-500 hover:text-slate-900 transition-200">Homepage</a>
                 <a href="about.html"
@@ -103,16 +123,14 @@
         </div>
     </main>
 
-    <footer class="bg-gray-200 py-4">
-        <div class="wrapper text-slate-700 text-xs text-center">© Copyright 2022 Grade Endeavour. All Rights
-            Reserved.
-        </div>
+    <footer class="bg-gray-100 py-4">
+        <div id="copyright" class="wrapper text-slate-500 text-xs text-center"></div>
     </footer>
 
     <!-- Templates -->
 
     <template id="template-course">
-        <div id="course">
+        <div id="course" aria-labelledby="course-details-name">
             <button id="course-header" tabindex="0"
                 class="w-full flex gap-4 items-center justify-between bg-gray-100 hover:bg-gray-200 px-4 py-3 transition-200">
                 <div class="flex items-center">
@@ -135,11 +153,19 @@
                     <h3 class="label">Course Stats</h3>
 
                     <div class="mt-4 flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center">
-                        <div aria-live="polite"
-                            class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 text-slate-700 text-sm sm:text-base">
-                            <span id="course-details-ca" aria-label="current average"></span>
-                            <span id="course-details-aa" aria-label="aimed average"></span>
-                            <span id="course-details-na" aria-label="needed average" class="font-semibold"></span>
+                        <div aria-live="polite" class="flex flex-wrap gap-2 sm:gap-4">
+                            <div class="flex flex-col bg-gray-100 py-3 px-4 text-sm text-slate-500">Current
+                                Average:<span id="course-details-ca" aria-label="current average"
+                                    class="text-lg font-semibold text-black"></span>
+                            </div>
+                            <div class="flex flex-col bg-gray-100 py-3 px-4 text-sm text-slate-500">Aimed
+                                Average:<span id="course-details-aa" aria-label="aimed average"
+                                    class="text-lg font-semibold text-black"></span>
+                            </div>
+                            <div class="flex flex-col bg-emerald-800 py-3 px-4 text-sm text-white">Needed
+                                Average:<span id="course-details-na" aria-label="needed average"
+                                    class="text-lg font-semibold"></span>
+                            </div>
                         </div>
                         <button id="course-delete-link" class="text-rose-600 hover:text-rose-900 text-sm">Delete
                             Course</button>
@@ -231,5 +257,9 @@
         </tr>
     </template>
 </body>
+
+<script>
+    document.querySelector("#copyright").innerText = `© Copyright ${new Date().getFullYear()} Grade Endeavour. All Rights Reserved.`
+</script>
 
 </html>
