@@ -37,6 +37,9 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
 
+    <!-- AOS Library Stylesheet -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style type="text/tailwindcss">
@@ -96,9 +99,11 @@
 
     <main class="mb-8">
         <section class="bg-emerald-800 text-white">
-            <div class="wrapper py-20">
+            <div class="wrapper py-24">
                 <h1 class="text-6xl sm:text-8xl">Achieve Your Grade Endeavours!</h1>
-                <p class="text-base sm:text-lg mt-4">Level up your school grades by managing your courses and goals on
+                <p class="text-base sm:text-lg mt-4">Level up your school
+                    grades by managing your
+                    courses and goals on
                     Grade Endeavour. See
                     what courses you need to put more effort into and what courses you are all clear!</p>
                 <div class="flex gap-4 mt-8">
@@ -111,28 +116,28 @@
             <div class="wrapper">
                 <h2 class="text-4xl">Features</h2>
                 <div class="grid sm:grid-cols-2 md:grid-cols-4 mt-8 gap-8">
-                    <div>
+                    <div data-aos="fade-up">
                         <img src="./icons/bolt_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Blazing Fast</h3>
                         <p class="text-slate-700 mt-2 text-sm leading-7">Our web application is faster than Baby
                             Zombies. There
                             are no refreshes, no redirects, no loading, just three simple HTML pages.</p>
                     </div>
-                    <div>
+                    <div data-aos="fade-up" data-aos-delay="100">
                         <img src="./icons/trending_up_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Guaranteed Results</h3>
                         <p class="text-slate-700 mt-2 text-sm leading-7">We have brought many students to greatness by
                             teaching
                             them to unlock their potential. We have users admitted to world's top universities.</p>
                     </div>
-                    <div>
+                    <div data-aos="fade-up" data-aos-delay="200">
                         <img src="./icons/lock_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Forever Secure</h3>
                         <p class="text-slate-700 mt-2 text-sm leading-7">There are no privacy issues here. We don't even
                             have a
                             server or database, all your information is reliably stored in your own browser.</p>
                     </div>
-                    <div>
+                    <div data-aos="fade-up" data-aos-delay="300">
                         <img src="./icons/groups_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Passionate Community</h3>
                         <p class="text-slate-700 mt-2 text-sm leading-7">Our loyal user community is massive. We have
@@ -143,12 +148,11 @@
                 </div>
             </div>
         </section>
-        </section>
         <section class="py-8 sm:py-12">
             <div class="wrapper flex flex-col gap-8">
                 <h2 class="text-4xl">Tutorial</h2>
-                <div>
-                    <h3 class="text-xl sm:text-2xl">1. Add Courses</h3>
+                <div data-aos="fade-up">
+                    <h3 class="text-xl">1. Add Courses</h3>
                     <p class="text-slate-700 mt-2 leading-7">To begin, input the course name and course grade goal, and
                         add it. A
                         course grade goal can be valid grade between 4 to 10, or 1 to 7 for IB students.
@@ -156,8 +160,8 @@
                         course. This shows the three important numbers that you need to know: your current average, your
                         aimed average, and your needed average.</p>
                 </div>
-                <div>
-                    <h3 class="text-xl sm:text-2xl">2. Add Course Entries</h3>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="text-xl">2. Add Course Entries</h3>
                     <p class="text-slate-700 mt-2 leading-7">For the application to function, you must also input course
                         entries.
                         To add course entries, input the name, type, date, and grade of the course entry. The course
@@ -166,8 +170,8 @@
                         automatically calculate you averages. It lists all your course entries in chronological order.
                     </p>
                 </div>
-                <div>
-                    <h3 class="text-xl sm:text-2xl">3. Endeavour!</h3>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="text-xl">3. Endeavour!</h3>
                     <p class="text-slate-700 mt-2 leading-7">All you have to do now is glimpse at your needed average to
                         see what
                         you need to effortlessly practice more. You can also edit your course goal through the forecast
@@ -187,7 +191,9 @@
 
 </body>
 
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 <script>
+    AOS.init();
     document.querySelector("#copyright").innerText = `© Copyright ${new Date().getFullYear()} Grade Endeavour. All Rights Reserved.`
 </script>
 
