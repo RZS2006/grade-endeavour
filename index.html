@@ -61,6 +61,14 @@
             .button--white-outline {
                 @apply py-2 px-3 uppercase font-semibold text-white text-sm rounded bg-transparent hover:bg-gray-200/10 whitespace-nowrap border-2 border-white box-border
             }
+
+            .tutorial-paragraph {
+                @apply text-slate-700 mt-4 leading-8
+            }
+
+            .tutorial-image {
+                @apply w-full block grow object-cover max-w-lg
+            }
         }
 
         @layer utilities {
@@ -119,28 +127,28 @@
                     <div data-aos="fade-up">
                         <img src="./icons/bolt_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Blazing Fast</h3>
-                        <p class="text-slate-700 mt-2 text-sm leading-7">Our web application is faster than Baby
+                        <p class="text-slate-700 mt-2 text-sm leading-8">Our web application is faster than Baby
                             Zombies. There
                             are no refreshes, no redirects, no loading, just three simple HTML pages.</p>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="100">
                         <img src="./icons/trending_up_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Guaranteed Results</h3>
-                        <p class="text-slate-700 mt-2 text-sm leading-7">We have brought many students to greatness by
+                        <p class="text-slate-700 mt-2 text-sm leading-8">We have brought many students to greatness by
                             teaching
                             them to unlock their potential. We have users admitted to world's top universities.</p>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="200">
                         <img src="./icons/lock_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Forever Secure</h3>
-                        <p class="text-slate-700 mt-2 text-sm leading-7">There are no privacy issues here. We don't even
+                        <p class="text-slate-700 mt-2 text-sm leading-8">There are no privacy issues here. We don't even
                             have a
                             server or database, all your information is reliably stored in your own browser.</p>
                     </div>
                     <div data-aos="fade-up" data-aos-delay="300">
                         <img src="./icons/groups_black_24dp.svg" aria-hidden="true" class="w-8">
                         <h3 class="font-semibold mt-2">Passionate Community</h3>
-                        <p class="text-slate-700 mt-2 text-sm leading-7">Our loyal user community is massive. We have
+                        <p class="text-slate-700 mt-2 text-sm leading-8">Our loyal user community is massive. We have
                             user all
                             over the
                             universe. Our users have no complaints whatsoever, our service is perfectly perfect.</p>
@@ -151,35 +159,52 @@
         <section class="py-8 sm:py-12">
             <div class="wrapper flex flex-col gap-8">
                 <h2 class="text-4xl">Tutorial</h2>
-                <div data-aos="fade-up">
-                    <h3 class="text-xl">1. Add Courses</h3>
-                    <p class="text-slate-700 mt-2 leading-7">To begin, input the course name and course grade goal, and
-                        add it. A
-                        course grade goal can be valid grade between 4 to 10, or 1 to 7 for IB students.
-                        After clicking the submit button, the application will create a collapsible dropdown for that
-                        course. This shows the three important numbers that you need to know: your current average, your
-                        aimed average, and your needed average.</p>
+                <div data-aos="fade-up" class="flex flex-col md:flex-row gap-8">
+                    <div class="grow">
+                        <h3 class="text-2xl">1. Add Courses</h3>
+                        <p class="tutorial-paragraph">To begin, input the course name and course grade goal,
+                            and add it. A course grade goal can be valid grade between 4 to 10, or 1 to 7 for IB
+                            students. After clicking the submit button, the application will create a collapsible
+                            dropdown for
+                            that
+                            course. This shows the three important numbers that you need to know: your current average,
+                            your
+                            aimed average, and your needed average.</p>
+                    </div>
+                    <img src="./img/screenshot-1.png" alt="add courses" class="tutorial-image">
                 </div>
-                <div data-aos="fade-up" data-aos-delay="100">
-                    <h3 class="text-xl">2. Add Course Entries</h3>
-                    <p class="text-slate-700 mt-2 leading-7">For the application to function, you must also input course
-                        entries.
-                        To add course entries, input the name, type, date, and grade of the course entry. The course
-                        entry type can be, for example, an exam or an essay. The course entry grade must also be a valid
-                        grade depending on the course's grading scale. After adding the course entry, the app will
-                        automatically calculate you averages. It lists all your course entries in chronological order.
-                    </p>
+                <div data-aos="fade-up" class="flex flex-col md:flex-row gap-8">
+                    <div class="grow">
+                        <h3 class="text-2xl">2. Add Course Entries</h3>
+                        <p class="tutorial-paragraph">For the application to function, you must also input
+                            course
+                            entries.
+                            To add course entries, input the name, type, date, and grade of the course entry. The course
+                            entry type can be, for example, an exam or an essay. The course entry grade must also be a
+                            valid
+                            grade depending on the course's grading scale. After adding the course entry, the app will
+                            automatically calculate you averages. It lists all your course entries in chronological
+                            order.
+                        </p>
+                    </div>
+                    <img src="./img/screenshot-2.png" alt="add course entries" class="tutorial-image">
                 </div>
-                <div data-aos="fade-up" data-aos-delay="200">
-                    <h3 class="text-xl">3. Endeavour!</h3>
-                    <p class="text-slate-700 mt-2 leading-7">All you have to do now is glimpse at your needed average to
-                        see what
-                        you need to effortlessly practice more. You can also edit your course goal through the forecast
-                        span and tolerance. By increasing forecast span, the app calculate the needed average of you
-                        next n course entries, so you spread out your effort. By increasing tolerance, you temporarily
-                        adjust you course goal to something tolerable to make it easier to achieve it. For example,
-                        tolerating 8.80 from 9.00
-                        can dampen your required effort.</p>
+                <div data-aos="fade-up" class="flex flex-col md:flex-row gap-8">
+                    <div class="grow">
+                        <h3 class="text-2xl">3. Endeavour!</h3>
+                        <p class="tutorial-paragraph">All you have to do now is glimpse at your needed
+                            average to
+                            see what
+                            you need to effortlessly practice more. You can also edit your course goal through the
+                            forecast
+                            span and tolerance. By increasing forecast span, the app calculate the needed average of you
+                            next n course entries, so you spread out your effort. By increasing tolerance, you
+                            temporarily
+                            adjust you course goal to something tolerable to make it easier to achieve it. For example,
+                            tolerating 8.80 from 9.00
+                            can dampen your required effort.</p>
+                    </div>
+                    <img src="./img/screenshot-3.png" alt="endeavour" class="tutorial-image">
                 </div>
             </div>
         </section>
