@@ -1,5 +1,9 @@
 import { fetchFromLocalStorage, saveToLocalStorage } from './local-storage.js';
-import { getCurrentAverage, getNeededAverage } from './averages.js';
+import {
+	getWeightSum,
+	getCurrentAverage,
+	getNeededAverage,
+} from './averages.js';
 import {
 	CONSTANTS,
 	getScaleByName,
@@ -28,8 +32,11 @@ let MIN_GRADE = getScaleByName(CONSTANTS.DEFAULT).min;
 let MAX_GRADE = getScaleByName(CONSTANTS.DEFAULT).max;
 let GRADE_STEP = getScaleByName(CONSTANTS.DEFAULT).step;
 
-const MIN_FORECAST_SPAN = 1;
-const MAX_FORECAST_SPAN = 10;
+// const MIN_FORECAST_SPAN = 1;
+// const MAX_FORECAST_SPAN = 10;
+
+// let MIN_WEIGHT_POINTS = 1;
+// let MAX_WEIGHT_POINTS = 9999;
 
 let courses = fetchFromLocalStorage('courses', []);
 let useIbGradingScale = fetchFromLocalStorage('use-ib-grading-scale', false);
@@ -48,15 +55,15 @@ const saveAndRenderCourses = (courses) => {
 	renderCourses(courses);
 };
 
-const addCourse = (name, goal, useIbGradingScale) => {
+const addCourse = ({ name, goal, useIbGradingScale }) => {
 	courses.push({
 		id: Date.now(),
 		name,
 		goal,
 		useIbGradingScale,
 		isOpen: false,
-		forecastSpan: 1,
 		tolerance: 0,
+		weightPoints: 1,
 		courseEntries: [],
 	});
 
@@ -69,7 +76,7 @@ const deleteCourse = (courseId) => {
 	saveAndRenderCourses(courses);
 };
 
-const addCourseEntry = (name, type, date, grade, courseId) => {
+const addCourseEntry = ({ name, type, date, grade, weight }, courseId) => {
 	findCourseById(courseId, (course) => {
 		course.courseEntries.push({
 			id: Date.now(),
@@ -77,6 +84,7 @@ const addCourseEntry = (name, type, date, grade, courseId) => {
 			type,
 			date,
 			grade,
+			weight,
 		});
 	});
 
@@ -93,17 +101,25 @@ const deleteCourseEntry = (entryId, courseId) => {
 	saveAndRenderCourses(courses);
 };
 
-const changeForecastSpan = (courseId, value) => {
+// const changeForecastSpan = (courseId, value) => {
+// 	findCourseById(courseId, (course) => {
+// 		course.forecastSpan = value;
+// 	});
+
+// 	saveAndRenderCourses(courses);
+// };
+
+const changeTolerance = (courseId, value) => {
 	findCourseById(courseId, (course) => {
-		course.forecastSpan = value;
+		course.tolerance = value;
 	});
 
 	saveAndRenderCourses(courses);
 };
 
-const changeTolerance = (courseId, value) => {
+const changeWeightPoints = (courseId, value) => {
 	findCourseById(courseId, (course) => {
-		course.tolerance = value;
+		course.weightPoints = value;
 	});
 
 	saveAndRenderCourses(courses);
@@ -132,10 +148,10 @@ const renderCourses = (courses) => {
 			name,
 			goal,
 			courseEntries,
-			forecastSpan,
-			tolerance,
-			isOpen,
-			useIbGradingScale,
+			tolerance = 1,
+			weightPoints = 1,
+			isOpen = false,
+			useIbGradingScale = false,
 		} = course;
 
 		const courseClone = cloneTemplate('#template-course');
@@ -157,12 +173,12 @@ const renderCourses = (courses) => {
 		setInnerText(courseClone, '#course-details-name', name);
 
 		const currentAverage = getCurrentAverage(courseEntries);
-		const neededAverage = getNeededAverage(
+		const neededAverage = getNeededAverage({
 			courseEntries,
 			goal,
-			forecastSpan,
-			tolerance
-		);
+			tolerance,
+			weightPoints,
+		});
 		const aimedAverage = goal - tolerance;
 
 		const displayedCurrentAverage = currentAverage.toFixed(2);
@@ -187,22 +203,23 @@ const renderCourses = (courses) => {
 
 		// Forecast Input
 
-		const forecastSpanInput = courseClone.querySelector('#forecast-span');
+		// const forecastSpanInput = courseClone.querySelector('#forecast-span');
 
-		forecastSpanInput.value = forecastSpan;
-		forecastSpanInput.addEventListener('change', (e) => {
-			const value = parseInt(e.target.value);
+		// forecastSpanInput.value = forecastSpan;
 
-			if (isBetween(value, MIN_FORECAST_SPAN, MAX_FORECAST_SPAN)) {
-				changeForecastSpan(courseId, value);
-			} else {
-				forecastSpanInput.value =
-					value > MAX_FORECAST_SPAN
-						? MAX_FORECAST_SPAN
-						: MIN_FORECAST_SPAN;
-				changeForecastSpan(courseId, parseInt(forecastSpanInput.value));
-			}
-		});
+		// forecastSpanInput.addEventListener('change', (e) => {
+		// 	const value = parseInt(e.target.value);
+
+		// 	if (isBetween(value, MIN_FORECAST_SPAN, MAX_FORECAST_SPAN)) {
+		// 		changeForecastSpan(courseId, value);
+		// 	} else {
+		// 		forecastSpanInput.value =
+		// 			value > MAX_FORECAST_SPAN
+		// 				? MAX_FORECAST_SPAN
+		// 				: MIN_FORECAST_SPAN;
+		// 		changeForecastSpan(courseId, parseInt(forecastSpanInput.value));
+		// 	}
+		// });
 
 		// Tolerance Input
 
@@ -237,6 +254,41 @@ const renderCourses = (courses) => {
 			}
 		});
 
+		// Weight Points Input
+
+		const weightPointsInput = courseClone.querySelector('#weight-points');
+
+		weightPointsInput.value = weightPoints;
+
+		const MIN_WEIGHT_POINTS = getWeightSum(courseEntries) + 1;
+		const MAX_WEIGHT_POINTS = 9999;
+
+		weightPointsInput.setAttribute('min', MIN_WEIGHT_POINTS);
+		weightPointsInput.setAttribute('max', MAX_WEIGHT_POINTS);
+
+		if (!isBetween(weightPoints, MIN_WEIGHT_POINTS, MAX_WEIGHT_POINTS)) {
+			return changeWeightPoints(
+				courseId,
+				weightPoints > MAX_WEIGHT_POINTS
+					? MAX_WEIGHT_POINTS
+					: MIN_WEIGHT_POINTS
+			);
+		}
+
+		weightPointsInput.addEventListener('change', (e) => {
+			const value = parseInt(e.target.value);
+
+			if (isBetween(value, MIN_WEIGHT_POINTS, MAX_WEIGHT_POINTS)) {
+				changeWeightPoints(courseId, value);
+			} else {
+				weightPointsInput.value =
+					value > MAX_WEIGHT_POINTS
+						? MAX_WEIGHT_POINTS
+						: MIN_WEIGHT_POINTS;
+				changeWeightPoints(courseId, parseInt(weightPointsInput.value));
+			}
+		});
+
 		// Delete Course Link
 
 		courseClone
@@ -262,6 +314,14 @@ const renderCourses = (courses) => {
 			getScaleByBoolean(useIbGradingScale).step
 		);
 
+		const courseEntryWeightInput = courseClone.querySelector(
+			'#course-item-weight'
+		);
+		courseEntryWeightInput.setAttribute(
+			'max',
+			9999 - 1 - getWeightSum(courseEntries)
+		);
+
 		if (courseEntries.length === 0) {
 			addClass(courseClone, '#course-entry-table', 'hidden');
 		}
@@ -279,7 +339,14 @@ const renderCourses = (courses) => {
 				return new Date(entryA.date) - new Date(entryB.date);
 			})
 			.forEach((entry) => {
-				const { id: entryId, name, type, date, grade } = entry;
+				const {
+					id: entryId,
+					name,
+					type,
+					date,
+					grade,
+					weight = 1,
+				} = entry;
 
 				const courseEntryClone = cloneTemplate(
 					'#template-course-entry'
@@ -305,6 +372,7 @@ const renderCourses = (courses) => {
 					'#course-entry-grade',
 					grade.toFixed(2)
 				);
+				setInnerText(courseEntryClone, '#course-entry-weight', weight);
 
 				// Delete Course Entry
 
@@ -330,12 +398,16 @@ const renderCourses = (courses) => {
 			const entryType = e.target.elements['type'].value;
 			const entryDate = e.target.elements['date'].value;
 			const entryGrade = e.target.elements['grade'].value;
+			const entryWeight = e.target.elements['weight'].value;
 
 			addCourseEntry(
-				entryName,
-				entryType,
-				entryDate,
-				parseFloat(entryGrade),
+				{
+					name: entryName,
+					type: entryType,
+					date: entryDate,
+					grade: parseFloat(entryGrade),
+					weight: parseInt(entryWeight),
+				},
 				courseId
 			);
 		});
@@ -367,7 +439,7 @@ addCourseForm.addEventListener('submit', (e) => {
 	const courseGoal = parseFloat(addCourseFormGoal.value);
 
 	if (courseName.length > 0 && isBetween(courseGoal, MIN_GRADE, MAX_GRADE)) {
-		addCourse(courseName, courseGoal, useIbGradingScale);
+		addCourse({ name: courseName, goal: courseGoal, useIbGradingScale });
 
 		addCourseFormName.value = '';
 		addCourseFormGoal.value = '';

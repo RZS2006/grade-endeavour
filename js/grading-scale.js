@@ -21,5 +21,5 @@ export const getScaleByName = (name) => {
 };
 
 export const getScaleByBoolean = (useIbGradingScale) => {
-	return GRADING_SCALES[useIbGradingScale ? 'ib' : 'default'];
+	return GRADING_SCALES[useIbGradingScale ? CONSTANTS.IB : CONSTANTS.DEFAULT];
 };
